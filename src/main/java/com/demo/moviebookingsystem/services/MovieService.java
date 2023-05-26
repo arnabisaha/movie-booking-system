@@ -23,15 +23,20 @@ public class MovieService {
         } else {
             log.info("Saving record: {}", movie);
             movie = movieRepository.saveAndFlush(movie);
+            movie.getTheatreList();
             log.info("Saved record: {}", movie);
             return movie;
         }
     }
 
+    @Transactional
     public List<Movie> listAllMovies() {
-        return movieRepository.findAll();
+        List<Movie> allMovies = movieRepository.findAll();
+        allMovies.forEach(Movie::getTheatreList);
+        return allMovies;
     }
 
+    @Transactional
     public List<Movie> findByName(String name) {
         return movieRepository.findByNameContainingIgnoreCaseOrderByName(name);
     }
