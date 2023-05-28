@@ -2,6 +2,7 @@ package com.demo.moviebookingsystem.controller;
 
 import com.demo.moviebookingsystem.entities.Movie;
 import com.demo.moviebookingsystem.entities.Theatre;
+import com.demo.moviebookingsystem.entities.TheatreMovieSchedule;
 import com.demo.moviebookingsystem.services.MovieService;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +33,7 @@ public class MovieController extends GenericRestControllerAdvice {
     }
 
     @GetMapping("/list-theatre/{movieId}")
-    public ResponseEntity<Set<Theatre>> listTheatres(@PathVariable Long movieId) throws NotFoundException {
+    public ResponseEntity<Set<TheatreMovieSchedule>> listTheatres(@PathVariable Long movieId) throws NotFoundException {
         return new ResponseEntity<>(movieService.listTheatres(movieId), HttpStatus.OK);
     }
 }

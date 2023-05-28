@@ -9,7 +9,7 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
-@ToString(exclude = "theatres")
+@ToString(exclude = "movieSchedules")
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -19,8 +19,8 @@ public class Movie {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    @ManyToMany(mappedBy = "movies")
+    @OneToMany(mappedBy = "theatre")
     @JsonIgnore
-    private Set<Theatre> theatres;
+    private Set<TheatreMovieSchedule> movieSchedules;
 
 }

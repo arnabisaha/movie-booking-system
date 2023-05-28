@@ -3,12 +3,16 @@ package com.demo.moviebookingsystem;
 import com.demo.moviebookingsystem.entities.Movie;
 import com.demo.moviebookingsystem.entities.Theatre;
 import com.demo.moviebookingsystem.services.MovieService;
+import com.demo.moviebookingsystem.services.TheatreMovieScheduleService;
 import com.demo.moviebookingsystem.services.TheatreService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.tomcat.jni.Local;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+import java.time.LocalDateTime;
 
 @SpringBootApplication
 @Slf4j
@@ -19,6 +23,9 @@ public class MovieBookingSystemApplication implements CommandLineRunner {
 
 	@Autowired
 	private TheatreService theatreService;
+
+	@Autowired
+	private TheatreMovieScheduleService theatreMovieScheduleService;
 
 	public static void main(String[] args) {
 		SpringApplication.run(MovieBookingSystemApplication.class, args);
@@ -37,15 +44,20 @@ public class MovieBookingSystemApplication implements CommandLineRunner {
 		Theatre rupasi = theatreService.save(Theatre.builder().name("Rupasi").build());
 
 		// Save movies in theatre
-		bolakar.addMovie(jw3);
-		bolakar.addMovie(ipMan);
-		theatreService.saveMovies(bolakar);
-		rupasi.addMovie(thePlatform);
-		rupasi.addMovie(jw4);
-		theatreService.saveMovies(rupasi);
+		theatreMovieScheduleService.addMovieInTheatre(
+				bolakar.getId(), jw4.getId(), LocalDateTime.now(), LocalDateTime.now().plusMinutes(90));
+		theatreMovieScheduleService.addMovieInTheatre(
+				bolakar.getId(), jw3.getId(), LocalDateTime.now(), LocalDateTime.now().plusMinutes(90));
+		theatreMovieScheduleService.addMovieInTheatre(
+				bolakar.getId(), ipMan.getId(), LocalDateTime.now(), LocalDateTime.now().plusMinutes(120));
+		theatreMovieScheduleService.addMovieInTheatre(
+				rupasi.getId(), thePlatform.getId(), LocalDateTime.now(), LocalDateTime.now().plusMinutes(120));
+		theatreMovieScheduleService.addMovieInTheatre(
+				rupasi.getId(), jw4.getId(), LocalDateTime.now(), LocalDateTime.now().plusMinutes(120));
 
 		// Extract all saved records
 		log.info("Saved movies from db: {}", movieService.listAll());
 		log.info("Saved theatres from db: {}", theatreService.listAll());
+		log.info("Saved movie schedules from db: {}", theatreMovieScheduleService.listAll());
 	}
 }

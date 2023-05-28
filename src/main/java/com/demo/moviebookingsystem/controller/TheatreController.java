@@ -1,7 +1,7 @@
 package com.demo.moviebookingsystem.controller;
 
-import com.demo.moviebookingsystem.entities.Movie;
 import com.demo.moviebookingsystem.entities.Theatre;
+import com.demo.moviebookingsystem.entities.TheatreMovieSchedule;
 import com.demo.moviebookingsystem.services.TheatreService;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
@@ -32,13 +33,15 @@ public class TheatreController extends GenericRestControllerAdvice {
     }
 
     @PostMapping("/add-movie/{theatreId}/{movieId}")
-    public ResponseEntity<Theatre> addMovieInTheatre(
+    public ResponseEntity<TheatreMovieSchedule> addMovieInTheatre(
             @PathVariable Long theatreId, @PathVariable Long movieId) throws NotFoundException {
-        return new ResponseEntity<>(theatreService.addMovieInTheatre(theatreId, movieId), HttpStatus.OK);
+        return new ResponseEntity<>(
+                theatreService.addMovieInTheatre(theatreId, movieId, LocalDateTime.now(),
+                        LocalDateTime.now().plusMinutes(120)), HttpStatus.OK);
     }
 
     @GetMapping("/list-movies/{theatreId}")
-    public ResponseEntity<Set<Movie>> listMovie(@PathVariable Long theatreId) throws NotFoundException {
+    public ResponseEntity<Set<TheatreMovieSchedule>> listMovie(@PathVariable Long theatreId) throws NotFoundException {
         return new ResponseEntity<>(theatreService.listAllMovies(theatreId), HttpStatus.OK);
     }
 }
