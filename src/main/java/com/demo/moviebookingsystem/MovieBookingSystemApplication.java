@@ -55,6 +55,11 @@ public class MovieBookingSystemApplication implements CommandLineRunner {
 		theatreMovieScheduleService.addMovieInTheatre(
 				rupasi.getId(), jw4.getId(), LocalDateTime.now(), LocalDateTime.now().plusMinutes(120));
 
+		// Problem with this approach
+//		theatreMovieScheduleService.addMovieInTheatre(
+//				rupasi.getId(), jw4.getId(), LocalDateTime.now().plusDays(1),
+//				LocalDateTime.now().plusDays(1).plusMinutes(120));
+
 		// Extract all saved records
 		log.info("Saved movies from db: {}", movieService.listAll());
 		log.info("Saved theatres from db: {}", theatreService.listAll());
