@@ -11,8 +11,6 @@ import java.util.Optional;
 @Repository
 public interface MovieRepository extends JpaRepository<Movie, Long> {
 
-    boolean existsByNameIgnoreCase(@NonNull String name);
-
     Optional<Movie> findByName(@NonNull String name);
 
     List<Movie> findByNameContainingIgnoreCaseOrderByName(@NonNull String name);

@@ -2,6 +2,7 @@ package com.demo.moviebookingsystem.services;
 
 import com.demo.moviebookingsystem.entities.Movie;
 import com.demo.moviebookingsystem.entities.Theatre;
+import com.demo.moviebookingsystem.entities.TheatreMovieSchedule;
 import com.demo.moviebookingsystem.repositories.MovieRepository;
 import javassist.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
@@ -22,8 +23,9 @@ public class MovieService {
 
     @Transactional
     public Movie save(Movie movie) {
-        if (movieRepository.existsByNameIgnoreCase(movie.getName())) {
-            return movieRepository.findByName(movie.getName()).get();
+        Optional<Movie> movieOptional = movieRepository.findByName(movie.getName());
+        if (movieOptional.isPresent()) {
+            return movieOptional.get();
         } else {
             log.info("Saving record: {}", movie);
             movie = movieRepository.saveAndFlush(movie);
@@ -43,11 +45,11 @@ public class MovieService {
     }
 
     @Transactional
-    public Set<Theatre> listTheatres(Long movieId) throws NotFoundException {
+    public Set<TheatreMovieSchedule> listTheatres(Long movieId) throws NotFoundException {
         Optional<Movie> movieOptional = movieRepository.findById(movieId);
         if (movieOptional.isEmpty()) {
             throw new NotFoundException("No movie found having id: " + movieId);
         }
-        return movieOptional.get().getTheatres();
+        return movieOptional.get().getMovieSchedules();
     }
 }
