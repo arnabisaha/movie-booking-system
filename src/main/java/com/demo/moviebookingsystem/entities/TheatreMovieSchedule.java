@@ -14,25 +14,19 @@ import java.time.LocalDateTime;
 @ToString
 public class TheatreMovieSchedule {
 
-    @EmbeddedId
-    private TheatreMovieScheduleKey id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @ManyToOne
-    @MapsId("theatreId")
+    @JoinColumn(name = "theatre_id")
     private Theatre theatre;
 
     @ManyToOne
-    @MapsId("movieId")
+    @JoinColumn(name = "movie_id")
     private Movie movie;
 
     private LocalDateTime startTime;
     private LocalDateTime endTime;
-
-    @PrePersist
-    public void initId() {
-        this.id = new TheatreMovieScheduleKey();
-        this.id.setTheatreId(this.theatre.getId());
-        this.id.setMovieId(this.movie.getId());
-    }
 
 }
