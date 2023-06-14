@@ -1,16 +1,20 @@
 package com.demo.moviebookingsystem.entities;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.springframework.lang.Nullable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
 
+import javax.annotation.PostConstruct;
 import javax.persistence.*;
-import java.util.List;
+import javax.transaction.Transactional;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.Objects;
+import java.util.Set;
 
 @Entity
-@Data
+@Getter
+@Setter
+@ToString(exclude = "movieSchedules")
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -20,12 +24,8 @@ public class Theatre {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    @ManyToMany
-    @JoinTable(
-            name = "theatre_movies",
-            joinColumns = @JoinColumn(name = "theatre_id"),
-            inverseJoinColumns = @JoinColumn(name = "movie_id")
-    )
-    private List<Movie> movieList;   // owning side
+    @OneToMany(mappedBy = "theatre")
+    @JsonIgnore
+    private Set<TheatreMovieSchedule> movieSchedules;
 
 }

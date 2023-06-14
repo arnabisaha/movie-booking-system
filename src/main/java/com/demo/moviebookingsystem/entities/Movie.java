@@ -4,12 +4,12 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
 @Setter
-@ToString(exclude = "theatreList")
+@ToString(exclude = "movieSchedules")
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -19,8 +19,8 @@ public class Movie {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    @ManyToMany(mappedBy = "movieList")
+    @OneToMany(mappedBy = "theatre")
     @JsonIgnore
-    private List<Theatre> theatreList;
+    private Set<TheatreMovieSchedule> movieSchedules;
 
 }
